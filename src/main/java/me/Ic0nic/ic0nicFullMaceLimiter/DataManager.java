@@ -1,0 +1,77 @@
+package me.Ic0nic.ic0nicFullMaceLimiter;
+
+import me.Ic0nic.ic0nicFullMaceLimiter.Ic0nicFullMaceLimiter;
+import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
+public class DataManager {
+    private final Ic0nicFullMaceLimiter plugin;
+    private File dataFile ;
+    private YamlConfiguration data;
+
+    private int MACE_COUNT=0;
+
+    public  DataManager(Ic0nicFullMaceLimiter plugin) {
+        this.plugin = plugin;
+    }
+
+    public void start() {
+        dataFile = new File(plugin.getDataFolder(), "data.yml");
+        if (!dataFile.exists()) {
+            plugin.getDataFolder().mkdir();
+            try {
+                dataFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        data =  YamlConfiguration.loadConfiguration(dataFile);
+
+
+        MACE_COUNT = data.getInt("MACE_COUNT");
+
+        Bukkit.getScheduler().runTaskTimer(this.plugin, () ->
+                        saveData()
+                ,6000L,6000L);
+    }
+
+    public void end() {
+        saveData();
+    }
+
+    public void saveData() {
+        data.set("MACE_COUNT", MACE_COUNT);
+        try {
+            this.data.save(this.dataFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isMaceOnLimit() {
+        return MACE_COUNT >= plugin.configManager.maceLimit();
+    }
+
+    public void incrementMaceCount() {
+        plugin.getLogger().info("MACE COUNT INCREMENTING");
+        MACE_COUNT++;
+
+    }
+
+    public int getMaceCount() {return MACE_COUNT;}
+    public void setMaceCount(int n) {MACE_COUNT = n;}
+    public void decrementMaceCount() {
+        MACE_COUNT = Math.max(0, MACE_COUNT-1);
+    }
+
+}

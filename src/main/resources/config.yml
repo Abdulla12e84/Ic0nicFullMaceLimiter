@@ -1,0 +1,19 @@
+# How many maces are allowed to be crafted
+mace-limit: 2
+# causing crafted maces to glow when dropped
+glowing-mace: true
+# removes all maces that haven't been crafted
+enforce-mace-limit: true
+# prevent maces from being placed inside containers
+stash-mace: false
+# make maces immune to everything (fire, despawning...etc) except for the minecraft void
+undestructable-maces: true
+
+
+enchantments-limits:
+  enchantable: true
+  density : 3
+
+cooldown:
+  enabled: true
+  time: 1200 # in ticks (60 seconds * 20 tickPerRate = 1200 ticks)

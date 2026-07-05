@@ -4,3 +4,7 @@ version: '${version}'
 main: me.Ic0nic.ic0nicFullMaceLimiter.Ic0nicFullMaceLimiter
 api-version: '1.21.11'
 load: POSTWORLD
+
+
+commands:
+  iconicFML:
