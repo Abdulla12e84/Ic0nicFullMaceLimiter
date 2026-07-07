@@ -2,6 +2,7 @@ package me.Ic0nic.ic0nicFullMaceLimiter.listeners;
 
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import me.Ic0nic.ic0nicFullMaceLimiter.Ic0nicFullMaceLimiter;
+import me.Ic0nic.ic0nicFullMaceLimiter.MaceCraftEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -51,6 +52,17 @@ public class MaceCountLimiterListener implements Listener {
             } else{
                 plugin.getLogger().info("CRAFTING MACE");
                 plugin.broadcastMessage("MACE HAS BEEN CRAFTED",false);
+                //event.getInventory().setResult(null);
+                if (plugin.configManager.maceCraftEventEnabled()) {
+                    Player player = (Player) event.getWhoClicked();
+                    if (plugin.configManager.maceCraftEventTime() > 0) {
+                        event.getInventory().setResult(null);
+                        player.closeInventory();
+                        plugin.dataManager.createMaceCraftEvent(player);
+                    } else {
+                        MaceCraftEvent.broadCastCraftedMace(plugin, player.name().toString() , player.getLocation());
+                    }
+                }
                 if (event.getCurrentItem() != null) {
                     plugin.markCraftedMace(event.getCurrentItem());
                 }
@@ -99,6 +111,7 @@ public class MaceCountLimiterListener implements Listener {
             } else player = event.getPlayer();
             if (player == null) return;
             for (ItemStack item : player.getInventory().getContents()) {
+                if (item == null) continue;
                 if (plugin.isCraftedMace(item)) {
                     plugin.broadcastMessage("MACE HAS BEEN CLEARED",true);
                 }

@@ -9,9 +9,9 @@ import java.util.HashMap;
 public class ConfigManager {
     private final Ic0nicFullMaceLimiter plugin;
     private FileConfiguration config;
-    private int MACE_LIMIT,COOLDOWN_TIME;
-    private boolean GLOWING_MACE=true,ENFORCE_MACE_LIMIT=true,STASH_MACE=false, ENCHANTABLE=false, UNDESTRUCTABLE=false,COOLDOWN_ENABLED, PUNISH_MISSING;
-    private HashMap<Enchantment, Integer> enchantmentsLimit = new HashMap<>();
+    private int MACE_LIMIT,COOLDOWN_TIME, MACE_CRAFT_EVENT_TIME;
+    private boolean GLOWING_MACE=true,ENFORCE_MACE_LIMIT=true,STASH_MACE=false, ENCHANTABLE=false, UNDESTRUCTABLE=false,COOLDOWN_ENABLED, PUNISH_MISSING, MACE_CRAFT_EVENT_ENABLED;
+    private final HashMap<Enchantment, Integer> enchantmentsLimit = new HashMap<>();
     public ConfigManager(Ic0nicFullMaceLimiter plugin) {
         this.plugin = plugin;
         this.start();
@@ -37,6 +37,9 @@ public class ConfigManager {
         COOLDOWN_ENABLED = config.getBoolean("cooldown.enabled",true);
         COOLDOWN_TIME = config.getInt("cooldown.time",1200);
         PUNISH_MISSING = config.getBoolean("cooldown.punish-missing",false);
+        MACE_CRAFT_EVENT_ENABLED = config.getBoolean("mace-craft-event.enabled",true);
+        MACE_CRAFT_EVENT_TIME = config.getInt("mace-craft-event.time",1200);
+
         enchantmentsLimit.put(Enchantment.DENSITY,config.getInt("enchantments-limits.density",5));
         enchantmentsLimit.put(Enchantment.BREACH,config.getInt("enchantments-limits.breach",4));
         enchantmentsLimit.put(Enchantment.FIRE_ASPECT,config.getInt("enchantments-limits.fire-aspect",2));
@@ -56,6 +59,8 @@ public class ConfigManager {
     public int cooldownTime() {return COOLDOWN_TIME;}
     public int getEnchantLimit(Enchantment enchantment) { return enchantmentsLimit.getOrDefault(enchantment, 255) ;}
     public boolean punishMissing() {return PUNISH_MISSING;}
+    public boolean maceCraftEventEnabled() {return MACE_CRAFT_EVENT_ENABLED;}
+    public int maceCraftEventTime() {return MACE_CRAFT_EVENT_TIME;}
 
     public void end() {
 

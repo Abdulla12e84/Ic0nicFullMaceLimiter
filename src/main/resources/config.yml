@@ -24,3 +24,7 @@ cooldown:
   enabled: true
   time: 1200 # in ticks (60 seconds * 20 tickPerRate = 1200 ticks)
   punish-missing: false
+
+mace-craft-event:
+  enabled: true
+  time: 1200
