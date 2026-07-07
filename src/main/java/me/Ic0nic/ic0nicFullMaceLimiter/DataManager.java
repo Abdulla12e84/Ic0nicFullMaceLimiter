@@ -69,7 +69,7 @@ public class DataManager {
     }
 
     public int getMaceCount() {return MACE_COUNT;}
-    public void setMaceCount(int n) {MACE_COUNT = n;}
+    public void setMaceCount(int n) {MACE_COUNT = Math.clamp(n,0, plugin.configManager.maceLimit());}
     public void decrementMaceCount() {
         MACE_COUNT = Math.max(0, MACE_COUNT-1);
     }

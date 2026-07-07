@@ -4,16 +4,23 @@ mace-limit: 2
 glowing-mace: true
 # removes all maces that haven't been crafted
 enforce-mace-limit: true
-# prevent maces from being placed inside containers
+# allow maces to be stashed inside containers
 stash-mace: false
-# make maces immune to everything (fire, despawning...etc) except for the minecraft void
+# make maces immune to everything (fire, despawning...etc.) except for the Minecraft void
 undestructable-maces: true
 
 
 enchantments-limits:
   enchantable: true
   density : 3
+  breach : 2
+  unbreaking : 1
+  mending : 0
+  fire-aspect : 2
+  wind-burst : 2
+  vanishing-curse : 0
 
 cooldown:
   enabled: true
   time: 1200 # in ticks (60 seconds * 20 tickPerRate = 1200 ticks)
+  punish-missing: false

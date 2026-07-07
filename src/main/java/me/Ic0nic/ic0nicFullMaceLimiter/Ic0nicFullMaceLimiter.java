@@ -1,5 +1,6 @@
 package me.Ic0nic.ic0nicFullMaceLimiter;
 
+import me.Ic0nic.ic0nicFullMaceLimiter.listeners.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -16,10 +17,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class Ic0nicFullMaceLimiter extends JavaPlugin {
-    public EventListener eventListener;
     private MaceLimiterCommandExecuter commandExecuter;
     public ConfigManager configManager;
     public DataManager dataManager = new DataManager(this);
+
+    public CooldownListener cooldownListener;
+    public GlowingMaceListener glowingMaceListener;
+    public LimitEnforcerListener limitEnforcerListener;
+    public MaceCountLimiterListener maceCountLimiterListener;
+    public StashMaceListener stashMaceListener;
+    public EnchantListener enchantListener;
 
     public final NamespacedKey craftedMaceKey = new NamespacedKey(this, "CraftedMace");
 
@@ -27,9 +34,15 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         configManager = new ConfigManager(this);
-        eventListener = new EventListener(this);
         commandExecuter = new MaceLimiterCommandExecuter(this);
         dataManager.start();
+
+        cooldownListener = new CooldownListener(this);
+        glowingMaceListener = new GlowingMaceListener(this);
+        limitEnforcerListener = new LimitEnforcerListener(this);
+        maceCountLimiterListener = new MaceCountLimiterListener(this);
+        stashMaceListener = new StashMaceListener(this);
+        enchantListener = new EnchantListener(this);
     }
 
     @Override
@@ -59,23 +72,4 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
         return false;
     }
 
-    public void enforceMaceLimit(ItemStack mace) {
-        if (isCraftedMace(mace)) {
-            if (!configManager.enchantable()) {
-                mace.removeEnchantments();
-                return;
-            }
-            HashMap<Enchantment, Integer> result = new HashMap<>();
-            for (Map.Entry<Enchantment, Integer> entry : mace.getEnchantments().entrySet()) {
-                result.put(entry.getKey(), Math.min(entry.getValue(),configManager.getEnchantLimit(entry.getKey())));
-
-            }
-            mace.removeEnchantments();
-            mace.addEnchantments(result);
-
-
-        } else if (configManager.enforceMaceLimit())
-            mace.setAmount(0);
-
-    }
 }

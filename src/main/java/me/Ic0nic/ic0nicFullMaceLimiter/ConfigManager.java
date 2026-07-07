@@ -10,7 +10,7 @@ public class ConfigManager {
     private final Ic0nicFullMaceLimiter plugin;
     private FileConfiguration config;
     private int MACE_LIMIT,COOLDOWN_TIME;
-    private boolean GLOWING_MACE=true,ENFORCE_MACE_LIMIT=true,STASH_MACE=false, ENCHANTABLE=false, UNDESTRUCTABLE=false,COOLDOWN_ENABLED;
+    private boolean GLOWING_MACE=true,ENFORCE_MACE_LIMIT=true,STASH_MACE=false, ENCHANTABLE=false, UNDESTRUCTABLE=false,COOLDOWN_ENABLED, PUNISH_MISSING;
     private HashMap<Enchantment, Integer> enchantmentsLimit = new HashMap<>();
     public ConfigManager(Ic0nicFullMaceLimiter plugin) {
         this.plugin = plugin;
@@ -36,6 +36,7 @@ public class ConfigManager {
         UNDESTRUCTABLE = config.getBoolean("undestructable-maces",false);
         COOLDOWN_ENABLED = config.getBoolean("cooldown.enabled",true);
         COOLDOWN_TIME = config.getInt("cooldown.time",1200);
+        PUNISH_MISSING = config.getBoolean("cooldown.punish-missing",false);
         enchantmentsLimit.put(Enchantment.DENSITY,config.getInt("enchantments-limits.density",5));
         enchantmentsLimit.put(Enchantment.BREACH,config.getInt("enchantments-limits.breach",4));
         enchantmentsLimit.put(Enchantment.FIRE_ASPECT,config.getInt("enchantments-limits.fire-aspect",2));
@@ -54,6 +55,7 @@ public class ConfigManager {
     public boolean cooldownEnabled() {return COOLDOWN_ENABLED;}
     public int cooldownTime() {return COOLDOWN_TIME;}
     public int getEnchantLimit(Enchantment enchantment) { return enchantmentsLimit.getOrDefault(enchantment, 255) ;}
+    public boolean punishMissing() {return PUNISH_MISSING;}
 
     public void end() {
 
