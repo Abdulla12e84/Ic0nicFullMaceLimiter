@@ -1,13 +1,9 @@
 package me.Ic0nic.ic0nicFullMaceLimiter;
 
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.bossbar.BossBarViewer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
@@ -16,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Transformation;
 
@@ -40,7 +35,7 @@ public class MaceCraftEvent implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         location = player.getLocation();
         time = plugin.configManager.maceCraftEventTime();
-        player.sendMessage("Event Time = " + time);
+
         orgTime = time;
         world = location.getWorld();
         this.name = player.getName();

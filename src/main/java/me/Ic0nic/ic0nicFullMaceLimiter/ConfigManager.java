@@ -64,9 +64,6 @@ public class ConfigManager {
     public int maceCraftEventTime() {return MACE_CRAFT_EVENT_TIME;}
     public boolean forgiveShieldHit() {return FORGIVE_SHIELD_HIT;}
 
-    public void end() {
-
-    }
     public void reload() {
         plugin.reloadConfig();
         config = plugin.getConfig();

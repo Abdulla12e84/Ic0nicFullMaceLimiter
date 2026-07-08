@@ -1,6 +1,5 @@
 package me.Ic0nic.ic0nicFullMaceLimiter.listeners;
 
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import me.Ic0nic.ic0nicFullMaceLimiter.Ic0nicFullMaceLimiter;
 import me.Ic0nic.ic0nicFullMaceLimiter.MaceCraftEvent;
 import net.kyori.adventure.text.Component;
@@ -12,21 +11,16 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRemoveEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.CraftingInventory;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -45,12 +39,9 @@ public class MaceCountLimiterListener implements Listener {
     public void onViewingRecipe(PrepareItemCraftEvent event) {
         ItemStack item = event.getInventory().getResult();
         if (item == null) return;
-        plugin.broadcastMessage("is repair = " + event.isRepair(),false);
         if (event.isRepair()) return;
         if (plugin.dataManager.isMaceOnLimit() && item.getType() == Material.MACE) {
-            plugin.getLogger().info("PREVENTING MACE CRAFT");
             item.setAmount(0);
-            plugin.broadcastMessage("Preventing MACE CRAFT",false);
         }
     }
 
@@ -58,10 +49,8 @@ public class MaceCountLimiterListener implements Listener {
     public void onCraftingMace(CraftItemEvent event) {
         ItemStack item = event.getRecipe().getResult();
 
-        plugin.broadcastMessage("a craft is triggered" ,false);
         if (item.getType() == Material.MACE) {
             if (plugin.dataManager.isMaceOnLimit()) {
-                plugin.getLogger().info("ur not sneaky");
                 item.setAmount(0);
             } else{
                 if (event.isShiftClick()) {
@@ -69,9 +58,7 @@ public class MaceCountLimiterListener implements Listener {
                     event.getWhoClicked().sendMessage(Component.text("Craft the mace without shift clicking").color(TextColor.color(255,0,0)));
                     return;
                 }
-                plugin.getLogger().info("CRAFTING MACE");
-                plugin.broadcastMessage("MACE HAS BEEN CRAFTED",false);
-                //event.getInventory().setResult(null);
+
                 plugin.dataManager.incrementMaceCount();
                 if (plugin.configManager.maceCraftEventEnabled()) {
                     Player player = (Player) event.getWhoClicked();
@@ -90,19 +77,12 @@ public class MaceCountLimiterListener implements Listener {
                         if (event.getCurrentItem() != null) {
 
                             plugin.markCraftedMace(event.getCurrentItem());
-                        } else {
-                            player.sendMessage("mace is null");
                         }
                     }
                     player.getWorld().playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, 1, 1);
                 } else {
                     if (event.getCurrentItem() != null) {
                         plugin.markCraftedMace(event.getCurrentItem());
-                    } else {
-                        plugin.broadcastMessage("mace is null",false);
-                        if (event.getInventory().getResult() != null) {
-                            plugin.broadcastMessage("otherway : " + event.getInventory().getResult(),false);
-                        }
                     }
                 }
             }
@@ -127,21 +107,11 @@ public class MaceCountLimiterListener implements Listener {
     @EventHandler
     public void onItemBreakEvent(PlayerItemBreakEvent event) {
         if (plugin.isCraftedMace(event.getBrokenItem())) {
-            plugin.broadcastMessage("BROKEN MACE",true);
             plugin.dataManager.decrementMaceCount();
 
         }
     }
 
-    /*@EventHandler(priority =  EventPriority.MONITOR, ignoreCancelled = true)
-    public void onItemDespawnEvent(ItemDespawnEvent event) {
-        if (plugin.isCraftedMace(event.getEntity().getItemStack())) {
-            plugin.broadcastMessage("MACE DESPAWNED",true);
-            //plugin.dataManager.decrementMaceCount();
-
-        }
-
-    }*/
 
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -162,25 +132,12 @@ public class MaceCountLimiterListener implements Listener {
             for (ItemStack item : player.getInventory().getContents()) {
                 if (item == null) continue;
                 if (plugin.isCraftedMace(item)) {
-                    plugin.broadcastMessage("MACE HAS BEEN CLEARED",true);
+                    plugin.dataManager.decrementMaceCount();
                 }
             }
         }
     }
 
-    /*@EventHandler
-    public void onEntityRemoveFromWorld(EntityRemoveFromWorldEvent event) {
-        if (event.getEntity() instanceof Item item) {
-            if (plugin.isCraftedMace(item.getItemStack())) {
-                //plugin.dataManager.decrementMaceCount();
-                //plugin.broadcastMessage("MACE HAS BEEN REMOVED",true);
-                if (item.getLocation().getY() <= -64) {
-                    //plugin.broadcastMessage("MACE HAS FELL OUTSIDE THE WORLD", true);
-                }
-
-            }
-        }
-    }*/
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityRemove(EntityRemoveEvent event) {
@@ -190,7 +147,6 @@ public class MaceCountLimiterListener implements Listener {
                 case DESPAWN,EXPLODE, DEATH  :
                     plugin.dataManager.decrementMaceCount();
             }
-            plugin.broadcastMessage("MACE REMOVED, CAUSE :" + event.getCause().name(),true);
 
 
         }
@@ -209,7 +165,6 @@ public class MaceCountLimiterListener implements Listener {
                     }
                 }
                 display.remove();
-                plugin.broadcastMessage("DISPLAY DELETED",false);
             }
         }
     }

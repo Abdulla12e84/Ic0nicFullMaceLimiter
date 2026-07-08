@@ -1,20 +1,14 @@
 package me.Ic0nic.ic0nicFullMaceLimiter;
 
 import me.Ic0nic.ic0nicFullMaceLimiter.listeners.*;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Ic0nicFullMaceLimiter extends JavaPlugin {
     private MaceLimiterCommandExecuter commandExecuter;
@@ -56,13 +50,8 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
 
 
 
-    public void broadcastMessage(String message, boolean isRed) {
-        getServer().sendMessage(MiniMessage.miniMessage().deserialize("<" +(isRed ? "red" : "green") + ">"+message));
-    }
-
     public void markCraftedMace(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text("CRAFTED MACE").decoration(TextDecoration.ITALIC, false));
         meta.getPersistentDataContainer().set(craftedMaceKey, PersistentDataType.BOOLEAN, true);
         item.setItemMeta(meta);
     }

@@ -14,7 +14,6 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -30,18 +29,8 @@ public class StashMaceListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (plugin.configManager.stashMace()) return;
-        Player player = (Player) event.getWhoClicked();
+
         Inventory view = event.getView().getTopInventory();
-        /*player.sendMessage("View type " + event.getView().getType().toString());
-        player.sendMessage("top inventory :  " + view.getTopInventory().getType());
-        player.sendMessage("bottom inventory : " + view.getBottomInventory().getType());*/
-        /*if (event.getClickedInventory()!= null)
-            player.sendMessage("clickedInventory : " + event.getClickedInventory().getType());
-        if (event.getCurrentItem() != null) {
-            player.sendMessage("Item is " + event.getCurrentItem().getType().toString());
-        }
-        player.sendMessage("slot raw num : " + event.getRawSlot());
-        player.sendMessage("action type : "+event.getAction().toString());*/
         if (view.getType() == InventoryType.PLAYER) return;
 
         Inventory clickedInventory = event.getClickedInventory();
@@ -60,7 +49,6 @@ public class StashMaceListener implements Listener {
                 view.getType() != InventoryType.SMOKER &&
                 view.getType() != InventoryType.CRAFTER
         ) return;
-        //player.sendMessage("CLICKING INVENTORY :-");
         switch (event.getAction()) {
             case InventoryAction.MOVE_TO_OTHER_INVENTORY:
                 if (clickedItem ==  null) return;
@@ -72,54 +60,30 @@ public class StashMaceListener implements Listener {
                 }
                 break;
             case InventoryAction.PLACE_ALL, InventoryAction.PLACE_ONE:
-                //clickedItem = view.getItem(event.getRawSlot());
-                //player.sendMessage("PLACING ITEM");
                 if (clickedInventory.getType() == InventoryType.PLAYER) {
-                    //player.sendMessage("putting it in ur inventory");
                     return;}
                 clickedItem = event.getCursor();
                 if (plugin.isCraftedMace(clickedItem)) {
                     event.setCancelled(true);
                     return;
-                } else {
-                    //player.sendMessage("it's not a crafted mace " + clickedItem.getType().name());
                 }
                 break;
             case InventoryAction.HOTBAR_SWAP:
-                //player.sendMessage("swapping");
                 if (clickedInventory.getType() == InventoryType.PLAYER) {
-                    //player.sendMessage("he's clicking his inv");
                     return;
                 }
 
                 clickedItem = event.getView().getBottomInventory().getItem(event.getHotbarButton());
 
                 if (clickedItem == null) {
-                    //player.sendMessage("item doesn't exist");
                     return;}
 
-                //player.sendMessage("clicked item is " + clickedItem.getType().name());
                 if (plugin.isCraftedMace(clickedItem)) {
-                    //player.sendMessage("SUCCESSFUL");
                     event.setCancelled(true);
-                } else {
-                    //player.sendMessage("it's not??");
                 }
                 break;
 
         }
-        /*switch (event.getView().getType()) {
-            case InventoryType.CHEST, InventoryType.ENDER_CHEST, InventoryType.BARREL, InventoryType.CRAFTER, InventoryType.DECORATED_POT, InventoryType.HOPPER,
-                 InventoryType.DISPENSER, InventoryType.DROPPER, InventoryType.SHULKER_BOX:
-                if (!plugin.configManager.stashMace()) {
-                    if (event.getCurrentItem() != null) {
-                        if (plugin.isCraftedMace(event.getCurrentItem())) {
-                            event.setCancelled(true);
-                        }
-                    }
-                }
-                break;
-        }*/
     }
 
     @EventHandler
@@ -141,14 +105,11 @@ public class StashMaceListener implements Listener {
     public void onItemPlace(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Player player = event.getPlayer();
-        //player.sendMessage("you're right clicking");
+
         if (plugin.configManager.stashMace()) return;
-        //player.sendMessage("stash mace is off");
         Block block = event.getClickedBlock();
         if (block == null) return;
-        //player.sendMessage("you're clicking nun");
         if (block.getType() != Material.DECORATED_POT && !shelves.contains(block.getType()) ) return;
-        //player.sendMessage("ok valid block");
         ItemStack clickedItem;
 
         if (block.getType() != Material.DECORATED_POT && block.getState().getBlockData() instanceof Powerable powerable) {
@@ -162,15 +123,12 @@ public class StashMaceListener implements Listener {
                         return;
                     }
                 }
-                player.sendMessage("no mace in ur hotbaR??");
             }
         }
         clickedItem = event.getItem();
         if (clickedItem == null) return;
-        //player.sendMessage("item is null");
         if (!plugin.isCraftedMace(clickedItem)) return;
         event.setCancelled(true);
-        //player.sendMessage("successful");
     }
 
     @EventHandler
@@ -187,11 +145,7 @@ public class StashMaceListener implements Listener {
 
         ItemStack currentItem = event.getCurrentItem(), cursorItem = event.getCursor();
         if (currentItem == null) return;
-        //player.sendMessage("slot raw num : " + event.getRawSlot());
-        //player.sendMessage("action type : "+event.getAction().toString());
 
-
-        //player.sendMessage("CLICKING INVENTORY :-");
         switch (event.getAction()) {
             case InventoryAction.PICKUP_SOME_INTO_BUNDLE, InventoryAction.PICKUP_ALL_INTO_BUNDLE :
                 if (plugin.isCraftedMace(currentItem))

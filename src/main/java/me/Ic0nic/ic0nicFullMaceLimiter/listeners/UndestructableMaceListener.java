@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 
 public class UndestructableMaceListener implements Listener {
-    private Ic0nicFullMaceLimiter plugin;
+    private final Ic0nicFullMaceLimiter plugin;
     public UndestructableMaceListener(Ic0nicFullMaceLimiter plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

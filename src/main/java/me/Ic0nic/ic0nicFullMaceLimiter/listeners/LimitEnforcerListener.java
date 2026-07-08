@@ -6,7 +6,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LimitEnforcerListener implements Listener {
-    private Ic0nicFullMaceLimiter plugin;
+    private final Ic0nicFullMaceLimiter plugin;
     public  LimitEnforcerListener(Ic0nicFullMaceLimiter plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this,plugin);
@@ -63,24 +62,20 @@ public class LimitEnforcerListener implements Listener {
                 newItem.setAmount(0);
             if (plugin.isCraftedMace(newItem)) {
                 enforceEnchantments(newItem);
-                //player.sendMessage("YOU'RE HOLDING A CRAFTED MACE");
-            } //else
-                //player.sendMessage("YOU'RE HOLDING AN UNTRACKED MACE");
+            }
         }
     }
 
     @EventHandler
     public void onItemPickup(PlayerAttemptPickupItemEvent event) {
         if (event.getItem().getItemStack().getType() == Material.MACE) {
-            //event.getPlayer().sendMessage("picking up a mace?");
             if (enforceMaceLimit(event.getItem().getItemStack())) {
                 event.setCancelled(true);
                 event.getItem().remove();
                 return;
             }
             enforceEnchantments(event.getItem().getItemStack());
-        } //else
-            //event.getPlayer().sendMessage("im glad huh");
+        }
     }
 
     @EventHandler

@@ -1,9 +1,6 @@
 package me.Ic0nic.ic0nicFullMaceLimiter;
 
-import me.Ic0nic.ic0nicFullMaceLimiter.Ic0nicFullMaceLimiter;
 import org.bukkit.Bukkit;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -42,13 +39,9 @@ public class DataManager {
         ConfigurationSection section = data.getConfigurationSection("mace-craft-events");
 
         if (section != null) {
-            plugin.getLogger().info("Loading MACE Craft Events");
             for (String key : section.getKeys(false)) {
-                plugin.getLogger().info("WE HAVE LOADED AN EVENT SUCCESSFULLY!");
                 maceCraftEvents.add(new MaceCraftEvent(plugin, section.getString(key+".name"),section.getLocation(key+".loc"),section.getInt(key+".time"),section.getInt(key+".org"),key));
             }
-        } else {
-            plugin.getLogger().info("NOT loading MACE Craft Events == NULL");
         }
 
 
@@ -85,7 +78,6 @@ public class DataManager {
     }
 
     public void incrementMaceCount() {
-        plugin.getLogger().info("MACE COUNT INCREMENTING");
         MACE_COUNT++;
 
     }

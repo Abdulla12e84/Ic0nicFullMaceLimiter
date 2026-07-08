@@ -11,14 +11,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -38,39 +33,15 @@ public class CooldownListener implements Listener {
     public void onPlayerHit(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
 
-            //player.sendMessage("why u hitting people");
-            if (!plugin.configManager.cooldownEnabled()) {
-                //player.sendMessage("lemme punish him!");
-                return;}
-
+            if (!plugin.configManager.cooldownEnabled())
+                return;
 
 
             ItemStack mainHandItem = player.getInventory().getItemInMainHand();
-            if (plugin.isCraftedMace(mainHandItem)) {
-                //player.sendMessage("HAHA UR MACE IS ON COOLDOWN");
-                if (player.hasCooldown(Material.MACE)) {
+            if (plugin.isCraftedMace(mainHandItem))
+                if (player.hasCooldown(Material.MACE))
                     event.setCancelled(true);
-                    return;
-                }
 
-                if (event.getEntity() instanceof Player victim) {
-                    if (victim.isBlocking()) {
-                        player.sendMessage("victim is blocking");
-                    }
-                    player.sendMessage("blocking modifier = " + event.getDamage() + " , final damage = " + event.getFinalDamage());
-                    if (event.isCancelled()) {
-                        player.sendMessage("cancelled hit");
-                    }
-                    else
-                        player.sendMessage("hit isnt' cancelled");
-                } else
-                    player.sendMessage("victim isn't player");
-
-
-                //player.setCooldown(Material.MACE, plugin.configManager.cooldownTime());
-            } else {
-                //player.sendMessage("what is it? a " + mainHandItem.getType().toString());
-            }
         }
 
     }
@@ -80,37 +51,23 @@ public class CooldownListener implements Listener {
     public void onPlayerHitMonitor(EntityDamageByEntityEvent event) {
 
         if (event.getDamager() instanceof Player player) {
-            player.sendMessage("monitoring");
-            //player.sendMessage("why u hitting people");
-            if (!plugin.configManager.cooldownEnabled()) {
-                //player.sendMessage("lemme punish him!");
-                return;}
+            if (!plugin.configManager.cooldownEnabled())
+                return;
 
-
-            player.sendMessage("cooldown is enabled");
             ItemStack mainHandItem = player.getInventory().getItemInMainHand();
             if (plugin.isCraftedMace(mainHandItem)) {
-                player.sendMessage("holding a mace");
-                //player.sendMessage("HAHA UR MACE IS ON COOLDOWN");
                 if (player.hasCooldown(Material.MACE))
                     return;
 
-                player.sendMessage("has a cooldown");
 
                 if (plugin.configManager.forgiveShieldHit())
                     if (event.getEntity() instanceof Player victim) {
                         if (victim.isBlocking() && event.getFinalDamage() == 0) {
-                            player.sendMessage("successful");
                             return;
-                        } else player.sendMessage("blocking modifier = " + victim.isBlocking() + " , damage = " + event.getFinalDamage());
-                    } else player.sendMessage("it's not a player");
-                else
-                    player.sendMessage("option is not on");
-
+                        }
+                    }
 
                 player.setCooldown(Material.MACE, plugin.configManager.cooldownTime());
-            } else {
-                //player.sendMessage("what is it? a " + mainHandItem.getType().toString());
             }
         }
 
@@ -134,11 +91,6 @@ public class CooldownListener implements Listener {
 
     }
 
-    @EventHandler
-    public void onShieldDamage(PlayerItemDamageEvent event ){
-        if (event.getItem().getType() == Material.SHIELD)
-            plugin.broadcastMessage("a shield is damaged",false);
-    }
 
     @EventHandler
     public void onPlayerPreAttack(PrePlayerAttackEntityEvent event) {
