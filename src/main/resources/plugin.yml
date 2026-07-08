@@ -8,3 +8,14 @@ load: POSTWORLD
 
 commands:
   iconicFML:
+
+permissions:
+  iconicfml.view:
+    description: "Allows the user to see how many maces exist on the server"
+    default : op
+  iconicfml.reload:
+    description: "Reload config"
+    default : op
+  iconicfml.set:
+    description: "Set the counter for maces on the server"
+    default : op

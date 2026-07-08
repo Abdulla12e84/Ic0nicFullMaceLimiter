@@ -1,6 +1,7 @@
 package me.Ic0nic.ic0nicFullMaceLimiter.listeners;
 
 import me.Ic0nic.ic0nicFullMaceLimiter.Ic0nicFullMaceLimiter;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Powerable;
@@ -157,6 +158,7 @@ public class StashMaceListener implements Listener {
                     if (clickedItem == null) continue;
                     if (plugin.isCraftedMace(clickedItem)) {
                         event.setCancelled(true);
+                        player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Take the mace out of your hotbar"));
                         return;
                     }
                 }

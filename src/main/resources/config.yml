@@ -9,9 +9,11 @@ stash-mace: false
 # make maces immune to everything (fire, despawning...etc.) except for the Minecraft void
 undestructable-maces: true
 
-
+# limiting enchantability of the mace
 enchantments-limits:
+  # if mace can be enchanted or not (overrides other enchantment limits)
   enchantable: true
+  # the max level of each enchant (you can't increase beyond vanilla's limit)
   density : 3
   breach : 2
   unbreaking : 1
@@ -20,11 +22,19 @@ enchantments-limits:
   wind-burst : 2
   vanishing-curse : 0
 
+# Mace cooldown
 cooldown:
   enabled: true
+  # How long the mace cooldown in ticks
   time: 1200 # in ticks (60 seconds * 20 tickPerRate = 1200 ticks)
+  # If hitting a shield shouldn't trigger the mace cooldown
+  forgive-shield-hit: false
+  # if  missing your mace attack should trigger the mace cooldown
   punish-missing: false
 
+# mace craft event is activated when a player crafts a mace
 mace-craft-event:
+  # if enabled, the player position would be announced
   enabled: true
+  # if time is bigger than 0, it won't craft the mace, instead it'll start a timer then drop the mace at the position the player crafted the mace at
   time: 1200

@@ -27,8 +27,10 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
     public MaceCountLimiterListener maceCountLimiterListener;
     public StashMaceListener stashMaceListener;
     public EnchantListener enchantListener;
+    public UndestructableMaceListener undestructableMaceListener;
 
     public final NamespacedKey craftedMaceKey = new NamespacedKey(this, "CraftedMace");
+    public final NamespacedKey eventItemDisplayKey = new NamespacedKey(this, "EventItemDisplay");
 
     @Override
     public void onEnable() {
@@ -43,6 +45,7 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
         maceCountLimiterListener = new MaceCountLimiterListener(this);
         stashMaceListener = new StashMaceListener(this);
         enchantListener = new EnchantListener(this);
+        undestructableMaceListener = new UndestructableMaceListener(this);
     }
 
     @Override
