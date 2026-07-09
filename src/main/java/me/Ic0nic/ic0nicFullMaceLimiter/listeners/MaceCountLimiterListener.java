@@ -144,7 +144,7 @@ public class MaceCountLimiterListener implements Listener {
         if (event.getEntity() instanceof Item item) {
             if (!plugin.isCraftedMace(item.getItemStack())) return;
             switch (event.getCause()) {
-                case DESPAWN,EXPLODE, DEATH  :
+                case DESPAWN,EXPLODE, DEATH, OUT_OF_WORLD:
                     plugin.dataManager.decrementMaceCount();
             }
 

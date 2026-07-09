@@ -55,6 +55,7 @@ public class LimitEnforcerListener implements Listener {
     public void onItemHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
         ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
+        if (!plugin.configManager.enforceMaceLimit()) return;
         if (newItem == null) return;
 
         if (newItem.getType() == Material.MACE) {
@@ -68,6 +69,7 @@ public class LimitEnforcerListener implements Listener {
 
     @EventHandler
     public void onItemPickup(PlayerAttemptPickupItemEvent event) {
+        if (!plugin.configManager.enforceMaceLimit()) return;
         if (event.getItem().getItemStack().getType() == Material.MACE) {
             if (enforceMaceLimit(event.getItem().getItemStack())) {
                 event.setCancelled(true);
@@ -80,6 +82,7 @@ public class LimitEnforcerListener implements Listener {
 
     @EventHandler
     public void onItemSwap(PlayerSwapHandItemsEvent event) {
+        if (!plugin.configManager.enforceMaceLimit()) return;
         if (event.getMainHandItem().getType() == Material.MACE) {
             if (!enforceMaceLimit(event.getMainHandItem()))
                 enforceEnchantments(event.getMainHandItem());

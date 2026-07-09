@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -111,7 +112,14 @@ public class MaceCraftEvent implements Listener {
                 world.dropItemNaturally(location.add(0,1,0), item);
                 plugin.dataManager.removeMaceCraftEvent(this);
                 PlayerJoinEvent.getHandlerList().unregister(this);
-                display.remove();
+                for (Entity entity : world.getChunkAt(location).getEntities()) {
+                    if (entity instanceof ItemDisplay itemDisplay) {
+                        String duuid = itemDisplay.getPersistentDataContainer().get(plugin.eventItemDisplayKey, PersistentDataType.STRING);
+                        if (duuid == null) continue;
+                        if (!duuid.equals(uuid)) continue;
+                        itemDisplay.remove();
+                    }
+                }
                 plugin.getServer().sendMessage(MiniMessage.miniMessage().deserialize("<light_purple><bold>MACE HAS BEEN CRAFTED"));
                 world.playSound(location,Sound.ENTITY_ENDER_DRAGON_DEATH,1,1);
 
