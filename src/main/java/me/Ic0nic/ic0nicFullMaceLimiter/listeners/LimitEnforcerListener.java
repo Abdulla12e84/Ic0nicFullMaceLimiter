@@ -24,6 +24,7 @@ public class LimitEnforcerListener implements Listener {
 
 
     public void enforceEnchantments(@NotNull ItemStack mace) {
+        if (!plugin.configManager.enforceEnchantments()) return;
         if (!plugin.isCraftedMace(mace)) return;
 
         if (!plugin.configManager.enchantable()) {
@@ -46,7 +47,15 @@ public class LimitEnforcerListener implements Listener {
 
     public boolean enforceMaceLimit(ItemStack mace) {
         if (!plugin.configManager.enforceMaceLimit()) return false;
-        return mace.getType() == Material.MACE && !plugin.isCraftedMace(mace);
+        if (mace.getType() != Material.MACE || plugin.isCraftedMace(mace)) return false;
+
+        if (plugin.configManager.registerOldMaces() && !plugin.dataManager.isMaceOnLimit()) {
+            plugin.markCraftedMace(mace);
+            plugin.dataManager.incrementMaceCount();
+            return false;
+        }
+
+        return true;
 
 
     }
@@ -86,6 +95,8 @@ public class LimitEnforcerListener implements Listener {
         if (event.getMainHandItem().getType() == Material.MACE) {
             if (!enforceMaceLimit(event.getMainHandItem()))
                 enforceEnchantments(event.getMainHandItem());
+            else
+                event.getMainHandItem().setAmount(0);
         }
     }
 

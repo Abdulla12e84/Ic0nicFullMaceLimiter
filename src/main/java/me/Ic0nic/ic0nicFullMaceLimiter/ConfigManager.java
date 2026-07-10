@@ -10,7 +10,7 @@ public class ConfigManager {
     private final Ic0nicFullMaceLimiter plugin;
     private FileConfiguration config;
     private int MACE_LIMIT,COOLDOWN_TIME, MACE_CRAFT_EVENT_TIME;
-    private boolean GLOWING_MACE=true,ENFORCE_MACE_LIMIT=true,STASH_MACE=false, ENCHANTABLE=false, UNDESTRUCTABLE=false,COOLDOWN_ENABLED, PUNISH_MISSING, MACE_CRAFT_EVENT_ENABLED, FORGIVE_SHIELD_HIT;
+    private boolean GLOWING_MACE=true,ENFORCE_MACE_LIMIT=true,STASH_MACE=false, ENCHANTABLE=false, UNDESTRUCTABLE=false,COOLDOWN_ENABLED, PUNISH_MISSING, MACE_CRAFT_EVENT_ENABLED, FORGIVE_SHIELD_HIT,ENFORCE_ENCHANTMENTS, REGISTER_OLD_MACES;
     private final HashMap<Enchantment, Integer> enchantmentsLimit = new HashMap<>();
     public ConfigManager(Ic0nicFullMaceLimiter plugin) {
         this.plugin = plugin;
@@ -30,7 +30,7 @@ public class ConfigManager {
     private void loadConfig() {
         MACE_LIMIT = config.getInt("mace-limit",1);
         GLOWING_MACE = config.getBoolean("glowing-mace",true);
-        ENFORCE_MACE_LIMIT = config.getBoolean("enforce-mace-limit",true);
+        ENFORCE_MACE_LIMIT = config.getBoolean("enforce-mace-limit.enabled",true);
         STASH_MACE = config.getBoolean("stash-mace",false);
         ENCHANTABLE = config.getBoolean("enchantments-limits.enchantable",false);
         UNDESTRUCTABLE = config.getBoolean("undestructable-maces",false);
@@ -40,6 +40,8 @@ public class ConfigManager {
         MACE_CRAFT_EVENT_ENABLED = config.getBoolean("mace-craft-event.enabled",true);
         MACE_CRAFT_EVENT_TIME = config.getInt("mace-craft-event.time",1200);
         FORGIVE_SHIELD_HIT = config.getBoolean("cooldown.forgive-shield-hit",false);
+        ENFORCE_ENCHANTMENTS = config.getBoolean("enforce-mace-limit.enforce-enchantments",true);
+        REGISTER_OLD_MACES = config.getBoolean("enforce-mace-limit.register-old-maces",true);
 
         enchantmentsLimit.put(Enchantment.DENSITY,config.getInt("enchantments-limits.density",5));
         enchantmentsLimit.put(Enchantment.BREACH,config.getInt("enchantments-limits.breach",4));
@@ -63,6 +65,8 @@ public class ConfigManager {
     public boolean maceCraftEventEnabled() {return MACE_CRAFT_EVENT_ENABLED;}
     public int maceCraftEventTime() {return MACE_CRAFT_EVENT_TIME;}
     public boolean forgiveShieldHit() {return FORGIVE_SHIELD_HIT;}
+    public boolean enforceEnchantments() {return ENFORCE_ENCHANTMENTS;}
+    public boolean registerOldMaces() {return REGISTER_OLD_MACES;}
 
     public void reload() {
         plugin.reloadConfig();

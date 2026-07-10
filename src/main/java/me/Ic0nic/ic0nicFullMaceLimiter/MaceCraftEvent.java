@@ -121,7 +121,7 @@ public class MaceCraftEvent implements Listener {
                     }
                 }
                 plugin.getServer().sendMessage(MiniMessage.miniMessage().deserialize("<light_purple><bold>MACE HAS BEEN CRAFTED"));
-                world.playSound(location,Sound.ENTITY_ENDER_DRAGON_DEATH,1,1);
+                playGlobalSound(Sound.ENTITY_ENDER_DRAGON_DEATH);
 
                 return;
             }
@@ -168,4 +168,10 @@ public class MaceCraftEvent implements Listener {
     public float getOrgTime() {return orgTime;}
     public String getName() {return name;}
     public String getUUID() {return uuid;}
+
+    public static void playGlobalSound(Sound sound) {
+        for (Player p : Bukkit.getOnlinePlayers())
+            p.playSound(p.getLocation(), sound,1,1);
+
+    }
 }

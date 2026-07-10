@@ -3,7 +3,13 @@ mace-limit: 2
 # causing crafted maces to glow when dropped
 glowing-mace: true
 # removes all maces that haven't been crafted
-enforce-mace-limit: true
+enforce-mace-limit:
+  enabled : true
+  # removes all illegal enchantments on maces
+  enforce-enchantments: true
+  # instead of deleting old maces (that haven't been crafted, or crafted before the plugin was added),
+  # it'd register the mace instead of deleting it if the mace limit isn't maxed
+  register-old-maces: true
 # allow maces to be stashed inside containers
 stash-mace: false
 # make maces immune to everything (fire, despawning...etc.) except for the Minecraft void

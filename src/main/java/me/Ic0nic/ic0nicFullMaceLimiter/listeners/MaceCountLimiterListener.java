@@ -7,6 +7,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemDisplay;
@@ -15,12 +16,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRemoveEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.CraftingInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -79,7 +82,7 @@ public class MaceCountLimiterListener implements Listener {
                             plugin.markCraftedMace(event.getCurrentItem());
                         }
                     }
-                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, 1, 1);
+                    MaceCraftEvent.playGlobalSound(Sound.BLOCK_END_PORTAL_SPAWN);
                 } else {
                     if (event.getCurrentItem() != null) {
                         plugin.markCraftedMace(event.getCurrentItem());
@@ -150,6 +153,22 @@ public class MaceCountLimiterListener implements Listener {
 
 
         }
+    }
+
+    @EventHandler
+    public void onPlayerDeathEvent(PlayerDeathEvent event) {
+        if (event.getKeepInventory()) return;
+        Inventory inv = event.getEntity().getInventory();
+        for (ItemStack is : inv.getContents()) {
+            if (is == null) continue;
+            if (plugin.isCraftedMace(is)) {
+                if (is.getEnchantmentLevel(Enchantment.VANISHING_CURSE) == 1) {
+                    plugin.dataManager.decrementMaceCount();
+                }
+            }
+        }
+
+
     }
 
     @EventHandler

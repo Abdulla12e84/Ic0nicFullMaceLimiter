@@ -45,8 +45,8 @@ public class DataManager {
         }
 
 
-        Bukkit.getScheduler().runTaskTimer(this.plugin, () ->
-                        saveData()
+        Bukkit.getScheduler().runTaskTimer(this.plugin,
+                        this::saveData
                 ,6000L,6000L);
     }
 
@@ -88,10 +88,10 @@ public class DataManager {
         MACE_COUNT = Math.max(0, MACE_COUNT-1);
     }
 
-    public MaceCraftEvent createMaceCraftEvent(Player player) {
+    public void createMaceCraftEvent(Player player) {
         MaceCraftEvent mce = new MaceCraftEvent(plugin, player);
         maceCraftEvents.add(mce);
-        return mce;
+
     }
 
     public void removeMaceCraftEvent(MaceCraftEvent mce) {
