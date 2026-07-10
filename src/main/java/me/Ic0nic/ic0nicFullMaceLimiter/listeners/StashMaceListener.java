@@ -21,9 +21,21 @@ import java.util.HashSet;
 
 public class StashMaceListener implements Listener {
     private final Ic0nicFullMaceLimiter plugin;
+
+    private HashSet<Material> shelves = new HashSet<>();
+
     public StashMaceListener(Ic0nicFullMaceLimiter plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+        if (plugin.is1_21_11OrMore()) {
+            shelves = new HashSet<>(Arrays.asList(Material.WARPED_SHELF
+                    , Material.ACACIA_SHELF, Material.BAMBOO_SHELF, Material.BIRCH_SHELF,
+                    Material.DARK_OAK_SHELF, Material.JUNGLE_SHELF, Material.CRIMSON_SHELF,
+                    Material.CHERRY_SHELF,Material.MANGROVE_SHELF, Material.PALE_OAK_SHELF,
+                    Material.SPRUCE_SHELF, Material.OAK_SHELF
+            ));
+        }
     }
 
     @EventHandler
@@ -94,12 +106,6 @@ public class StashMaceListener implements Listener {
 
     }
 
-    private final HashSet<Material> shelves = new HashSet<>(Arrays.asList(Material.WARPED_SHELF
-        , Material.ACACIA_SHELF, Material.BAMBOO_SHELF, Material.BIRCH_SHELF,
-            Material.DARK_OAK_SHELF, Material.JUNGLE_SHELF, Material.CRIMSON_SHELF,
-            Material.CHERRY_SHELF,Material.MANGROVE_SHELF, Material.PALE_OAK_SHELF,
-            Material.SPRUCE_SHELF, Material.OAK_SHELF
-    ));
 
     @EventHandler
     public void onItemPlace(PlayerInteractEvent event) {

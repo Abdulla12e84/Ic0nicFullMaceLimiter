@@ -23,6 +23,8 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
     public EnchantListener enchantListener;
     public UndestructableMaceListener undestructableMaceListener;
 
+    private boolean is1_21_11 = false;
+
     public final NamespacedKey craftedMaceKey = new NamespacedKey(this, "CraftedMace");
     public final NamespacedKey eventItemDisplayKey = new NamespacedKey(this, "EventItemDisplay");
 
@@ -40,6 +42,9 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
         stashMaceListener = new StashMaceListener(this);
         enchantListener = new EnchantListener(this);
         undestructableMaceListener = new UndestructableMaceListener(this);
+
+        is1_21_11 = getServer().getMinecraftVersion().contains("1.21.11") || getServer().getMinecraftVersion().contains("26");
+
     }
 
     @Override
@@ -63,5 +68,7 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
         }
         return false;
     }
+
+    public boolean is1_21_11OrMore() {return is1_21_11;}
 
 }
