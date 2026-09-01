@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.CrafterCraftEvent;
 import org.bukkit.event.entity.EntityRemoveEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -186,5 +187,11 @@ public class MaceCountLimiterListener implements Listener {
                 display.remove();
             }
         }
+    }
+
+    @EventHandler
+    public void onCrafterCrafting(CrafterCraftEvent event) {
+        if (event.getResult().getType() == Material.MACE)
+            event.setCancelled(true);
     }
 }
