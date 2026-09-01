@@ -39,7 +39,7 @@ public class MaceCraftEvent implements Listener {
 
         orgTime = time;
         world = location.getWorld();
-        this.name = player.getName();
+        this.name = plugin.configManager.revealPlayer() ? player.getName() : "Unknown";
         this.uuid = UUID.randomUUID().toString();
         this.start();
     }
@@ -58,18 +58,22 @@ public class MaceCraftEvent implements Listener {
     }
 
     public static void broadCastCraftedMace(Ic0nicFullMaceLimiter plugin, String name, Location loc) {
-        String title = name+ "<#676767>'s Crafted the <light_purple>Mace</light_purple> at</#676767> ";
-        switch (loc.getWorld().getEnvironment()) {
-            case World.Environment.NORMAL -> title += "<green>";
-            case World.Environment.NETHER -> title += "<red>";
-            case World.Environment.THE_END -> title += "<#FFFDA8>";
+        String title = (plugin.configManager.revealPlayer() ? name : "Unknown")+ "<#676767>'s Crafted the</#676767> <light_purple>Mace</light_purple>";
+        if (plugin.configManager.revealPosition()) {
+
+            title += " <#676767>at</#676767> ";
+            switch (loc.getWorld().getEnvironment()) {
+                case World.Environment.NORMAL -> title += "<green>";
+                case World.Environment.NETHER -> title += "<red>";
+                case World.Environment.THE_END -> title += "<#FFFDA8>";
+            }
+
+
+            title += loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
         }
-
-
-        title += loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
         broadCastCraftedMace(plugin,MiniMessage.miniMessage().deserialize(title));
     }
-    public static void broadCastCraftedMace(Ic0nicFullMaceLimiter plugin, Component msg) {
+    private static void broadCastCraftedMace(Ic0nicFullMaceLimiter plugin, Component msg) {
         plugin.getServer().sendMessage(msg);
     }
     private void start() {

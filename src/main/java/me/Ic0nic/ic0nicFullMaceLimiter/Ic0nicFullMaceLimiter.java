@@ -46,6 +46,7 @@ public final class Ic0nicFullMaceLimiter extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         dataManager.end();
+        configManager.onEnd();
     }
 
 

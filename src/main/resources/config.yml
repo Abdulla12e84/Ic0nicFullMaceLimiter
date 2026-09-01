@@ -43,4 +43,8 @@ mace-craft-event:
   # if enabled, the player position would be announced
   enabled: true
   # if time is bigger than 0, it won't craft the mace, instead it'll start a timer then drop the mace at the position the player crafted the mace at
-  time: 1200
+  time: 18000
+  # if the player name should be announced
+  reveal-player: true
+  # if the position should be announced (this option only functions when `time` is 0)
+  reveal-position: true
